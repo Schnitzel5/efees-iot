@@ -1,0 +1,28 @@
+{
+  "name": "efees-iot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "core.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Schnitzel5/efees-iot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Schnitzel5/efees-iot/issues"
+  },
+  "homepage": "https://github.com/Schnitzel5/efees-iot#readme",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "chokidar": "^3.5.3",
+    "dotenv": "^16.0.3",
+    "form-data": "^4.0.0",
+    "xhr2": "^0.2.1"
+  }
+}
