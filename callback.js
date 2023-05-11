@@ -30,20 +30,9 @@ axios.post('/login',
                 REMEMBERME = temp[0];
             }
         });
-        /*watch('./signals/').on('change', (path, event) => {
-            console.log("Received signal!");
-            readFile(path, { encoding: 'utf-8' }, (err, data) => {
-                if (err) {
-                    console.error(err.message);
-                    return;
-                }
-                if (data === "THIS IS A TEST MESSAGE") {
-                    sendEmergency();
-                }
-            });
-        });*/
-        sendHeartbeat(true);
-        setInterval(sendHeartbeat, 275000);
+        if (process.env.DECODED_1_TEXT === "EFEES_SIGX") {
+            sendEmergency();
+        }
     }).catch((err) => {
         console.error("ERROR on login...");
         console.error(err.message);
@@ -57,29 +46,6 @@ function relogin(callback) {
                 callback();
             } else {
                 console.warn("Relogin failed with status: " + val.statusText);
-            }
-        })
-        .catch((err) => console.error(err.message));
-}
-
-function sendHeartbeat() {
-    const date = new Date();
-    const data = `${date.getFullYear()} ${(date.getMonth() + 1)} ${date.getDate()} ${date.getHours()} ${date.getMinutes()} ${date.getSeconds()}`;
-    var formData = new FormData();
-    formData.append("dateTime", data);
-    axios.post('/api/v1/metrics/IoT/heartbeat',
-        formData, {
-        headers: {
-            "Cookie": `${JSESSIONID}; ${REMEMBERME}`
-        }
-    })
-        .then((val) => {
-            if (val.status === 200) {
-                console.info("Heartbeat sent!");
-            } else if (val.status === 401) {
-                relogin(() => sendHeartbeat());
-            } else {
-                console.warn("Heartbeat sent with status: " + val.statusText);
             }
         })
         .catch((err) => console.error(err.message));
