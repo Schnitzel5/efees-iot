@@ -1,8 +1,6 @@
 import axios from 'axios';
-import { watch } from 'chokidar';
 import * as dotenv from 'dotenv';
 import FormData from 'form-data';
-import { readFile } from 'fs';
 dotenv.config();
 
 console.log("Application started...");
@@ -11,7 +9,7 @@ var JSESSIONID = null;
 var REMEMBERME = null;
 
 var formData = new FormData();
-formData.append("username", process.env.USER);
+formData.append("username", process.env.USR);
 formData.append("password", process.env.PW);
 formData.append("remember-me", "on");
 
@@ -30,20 +28,8 @@ axios.post('/login',
                 REMEMBERME = temp[0];
             }
         });
-        /*watch('./signals/').on('change', (path, event) => {
-            console.log("Received signal!");
-            readFile(path, { encoding: 'utf-8' }, (err, data) => {
-                if (err) {
-                    console.error(err.message);
-                    return;
-                }
-                if (data === "THIS IS A TEST MESSAGE") {
-                    sendEmergency();
-                }
-            });
-        });*/
         sendHeartbeat(true);
-        setInterval(sendHeartbeat, 275000);
+        setInterval(sendHeartbeat, 250000);
     }).catch((err) => {
         console.error("ERROR on login...");
         console.error(err.message);
@@ -80,29 +66,6 @@ function sendHeartbeat() {
                 relogin(() => sendHeartbeat());
             } else {
                 console.warn("Heartbeat sent with status: " + val.statusText);
-            }
-        })
-        .catch((err) => console.error(err.message));
-}
-
-function sendEmergency() {
-    const date = new Date();
-    const data = `${date.getFullYear()} ${date.getMonth()} ${date.getDate()} ${date.getHours()} ${date.getMinutes()} ${date.getSeconds()}`;
-    var formData = new FormData();
-    formData.append("dateTime", data);
-    axios.post('/api/v1/metrics/IoT/emergency',
-        formData, {
-        headers: {
-            "Cookie": `${JSESSIONID}; ${REMEMBERME}`
-        }
-    })
-        .then((val) => {
-            if (val.status === 200) {
-                console.info("Emergency signal sent!");
-            } else if (val.status === 401) {
-                relogin(() => sendEmergency());
-            } else {
-                console.warn("Emergency signal sent with status: " + val.statusText);
             }
         })
         .catch((err) => console.error(err.message));

@@ -1,8 +1,6 @@
 import axios from 'axios';
-import { watch } from 'chokidar';
 import * as dotenv from 'dotenv';
 import FormData from 'form-data';
-import { readFile } from 'fs';
 dotenv.config();
 
 console.log("Application started...");
@@ -11,7 +9,7 @@ var JSESSIONID = null;
 var REMEMBERME = null;
 
 var formData = new FormData();
-formData.append("username", process.env.USER);
+formData.append("username", process.env.USR);
 formData.append("password", process.env.PW);
 formData.append("remember-me", "on");
 
